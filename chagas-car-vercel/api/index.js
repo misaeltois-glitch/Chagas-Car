@@ -333,6 +333,6 @@ module.exports = async function handler(req, res) {
   } catch (error) {
     console.error("Chagas Car API:", error);
     if (error.code === "23505") return send(res, 409, { error: "Já existe um registro com esses dados." });
-    return send(res, 500, { error: "Erro interno. Confira as variáveis de ambiente e o banco Neon." });
+    return send(res, 500, { error: "Erro interno: " + (error.message || error) });
   }
 };
