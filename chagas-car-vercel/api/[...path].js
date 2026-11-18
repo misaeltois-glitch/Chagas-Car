@@ -1,6 +1,9 @@
 const bcrypt = require("bcryptjs");
-const { sql } = require("../lib/db");
-const { createSession, readSession, setSession, clearSession } = require("../lib/auth");
+let sql, createSession, readSession, setSession, clearSession, loadError;
+try {
+  ({ sql } = require("../lib/db"));
+  ({ createSession, readSession, setSession, clearSession } = require("../lib/auth"));
+} catch (e) { loadError = e; }
 
 function send(res, status, data) {
   res.status(status).json(data);
@@ -50,6 +53,7 @@ module.exports = async function handler(req, res) {
     return res.status(204).end();
   }
 
+  if (loadError) return res.status(500).json({ error: "Configuração do servidor: " + loadError.message });
   const path = (req.url || "").split("?")[0].replace(/^\/api\/?/, "").split("/").filter(Boolean);
   const route = path.join("/");
   const b = body(req);
