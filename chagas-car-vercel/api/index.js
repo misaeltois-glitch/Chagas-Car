@@ -295,7 +295,7 @@ module.exports = async function handler(req, res) {
       let vehicle;
       const foundV = await sql`SELECT * FROM vehicles WHERE office_id=${user.office} AND plate=${plate} LIMIT 1`;
       vehicle = foundV[0];
-      if (vehicle && vehicle.customer_id !== customer.id) {
+      if (vehicle && vehicle.customer_id !== customer.id && (!id || b.transfer_owner)) {
         if (!b.transfer_owner) return send(res, 409, { error: "Esta placa pertence a outro cliente. Use \"Trocar dono\" para transferir o veículo." });
         await sql`UPDATE vehicles SET customer_id=${customer.id} WHERE id=${vehicle.id} AND office_id=${user.office}`;
         vehicle.customer_id = customer.id;
