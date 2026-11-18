@@ -180,6 +180,7 @@ module.exports = async function handler(req, res) {
     }
     if (route.startsWith("customers/") && req.method === "PUT") {
       const id = path[1];
+      if (!String(b.name||"").trim()) return send(res, 400, { error: "Informe o nome do cliente." });
       const rows = await sql`UPDATE customers SET name=${String(b.name||"").trim()}, phone=${String(b.phone||"")}, document=${String(b.document||"")}, address=${String(b.address||"")}, updated_at=NOW() WHERE id=${id} AND office_id=${user.office} RETURNING *`;
       if (!rows[0]) return send(res, 404, { error: "Cliente não encontrado." });
       return send(res, 200, { customer: rows[0] });
@@ -295,7 +296,7 @@ module.exports = async function handler(req, res) {
         WHERE o.id=${id} AND o.office_id=${user.office} LIMIT 1
       `;
       if (!rows[0]) return send(res, 404, { error: "Ordem não encontrada." });
-      const items = await sql`SELECT * FROM order_items WHERE order_id=${id} AND office_id=${user.office} ORDER BY id`;
+      const items = await sql`SELECT * FROM order_items WHERE order_id=${id} AND office_id=${user.office} ORDER BY ctid`;
       return send(res, 200, { order: rows[0], items });
     }
 
@@ -322,7 +323,7 @@ module.exports = async function handler(req, res) {
         `;
       const ids = rows.map(r => r.id);
       let itemRows = [];
-      if (ids.length) itemRows = await sql`SELECT order_id,kind,description,quantity,unit_price FROM order_items WHERE office_id=${user.office} AND order_id = ANY(${ids}::uuid[]) ORDER BY id`;
+      if (ids.length) itemRows = await sql`SELECT order_id,kind,description,quantity,unit_price FROM order_items WHERE office_id=${user.office} AND order_id = ANY(${ids}::uuid[]) ORDER BY ctid`;
       const grouped = {};
       itemRows.forEach(i => (grouped[i.order_id] ||= []).push(i));
       rows.forEach(r => r.items = grouped[r.id] || []);
