@@ -3,46 +3,76 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#111827"><title>Chagas Car · Oficina</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23d62828'/%3E%3Ctext x='16' y='22' font-size='16' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'%3ECC%3C/text%3E%3C/svg%3E">
 <style>
 :root{--bg:#f3f4f6;--card:#fff;--tx:#17191f;--mut:#667085;--bd:#d9dee7;--red:#d62828;--nav:#111827;--green:#15803d}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 system-ui,Segoe UI,Arial}
 header{background:var(--nav);color:#fff;padding:14px 20px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
 .brand{font-size:21px;font-weight:800;letter-spacing:.5px}.brand span{color:#ef4444}header small{display:block;color:#cbd5e1;font-weight:400;font-size:12px}
-nav{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}button{border:1px solid var(--bd);background:#fff;color:var(--tx);border-radius:8px;padding:9px 13px;font:inherit;cursor:pointer}button.primary{background:var(--red);border-color:var(--red);color:#fff;font-weight:700}button.dark{background:transparent;color:white;border-color:#ffffff55}button:disabled{opacity:.5;cursor:not-allowed}
-main{max-width:1100px;margin:auto;padding:18px}.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:17px;margin-bottom:15px;box-shadow:0 2px 8px #10182808}
-h1{font-size:24px;margin:0 0 5px}h2{font-size:18px;margin:0 0 13px}h3{font-size:15px;margin:15px 0 7px}
+nav{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+button{border:1px solid var(--bd);background:#fff;color:var(--tx);border-radius:8px;padding:9px 13px;font:inherit;cursor:pointer}
+button.primary{background:var(--red);border-color:var(--red);color:#fff;font-weight:700}
+button.dark{background:transparent;color:#fff;border-color:#ffffff55}button.dark.on{background:#ffffff22;border-color:#fff}
+button.danger{color:#b91c1c;border-color:#fecaca}button.small{padding:6px 10px;font-size:13px}
+button:disabled{opacity:.5;cursor:not-allowed}
+main{max-width:1100px;margin:auto;padding:18px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:17px;margin-bottom:15px;box-shadow:0 2px 8px #10182808}
+h1{font-size:24px;margin:0 0 5px}h2{font-size:18px;margin:0 0 13px}
+.top{display:flex;align-items:center;gap:10px;margin-bottom:10px}.top h1{margin:0}.back{padding:7px 12px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:11px}
-label{display:block;color:var(--mut);font-size:12px;margin:0 0 4px}input,select,textarea{width:100%;padding:10px;border:1px solid var(--bd);border-radius:8px;background:#fff;color:var(--tx);font:inherit}textarea{min-height:70px}
-.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}.row>*{flex:0 0 auto}.row .grow{flex:1}
+label{display:block;color:var(--mut);font-size:12px;margin:0 0 4px}
+input,select,textarea{width:100%;padding:10px;border:1px solid var(--bd);border-radius:8px;background:#fff;color:var(--tx);font:inherit}
+input[readonly]{background:#f1f5f9;color:#334155}textarea{min-height:70px}
+.plate{font-size:26px;font-weight:800;letter-spacing:3px;text-transform:uppercase;text-align:center;max-width:280px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}.row .grow{flex:1}
 .bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.bar input,.bar select{flex:1;min-width:160px}
 table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:8px;border-bottom:1px solid var(--bd);font-size:13px}th{color:var(--mut)}
-.item{display:flex;gap:8px;align-items:center;border-top:1px solid var(--bd);padding:10px 0;flex-wrap:wrap}.item .info{flex:1;min-width:180px}.muted{color:var(--mut);font-size:13px}.tag{display:inline-block;border:1px solid currentColor;border-radius:30px;padding:2px 9px;font-size:12px}.aberta{color:#b45309}.andamento{color:#2563eb}.pronta{color:#15803d}.entregue{color:#667085}
+.item{display:flex;gap:8px;align-items:center;border-top:1px solid var(--bd);padding:10px 0;flex-wrap:wrap}.item .info{flex:1;min-width:180px}
+.muted{color:var(--mut);font-size:13px}.tag{display:inline-block;border:1px solid currentColor;border-radius:30px;padding:2px 9px;font-size:12px}
+.aberta{color:#b45309}.andamento{color:#2563eb}.pronta{color:#15803d}.entregue{color:#667085}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px}.stat{background:#fff;border:1px solid var(--bd);border-radius:10px;padding:12px}.stat b{display:block;font-size:22px}
-.hidden{display:none!important}.error{color:#b91c1c;margin-top:8px}.success{color:var(--green);margin-top:8px}.auth{max-width:460px;margin:7vh auto;padding:0 15px}.auth .card{padding:24px}.logo{font-weight:900;font-size:27px;margin-bottom:18px}.logo span{color:var(--red)}.hint{background:#f8fafc;border:1px dashed var(--bd);border-radius:8px;padding:10px;color:var(--mut);font-size:13px;margin:10px 0}
+.hidden{display:none!important}.error{color:#b91c1c;margin-top:8px}.success{color:var(--green);margin-top:8px}
+.auth{max-width:460px;margin:7vh auto;padding:0 15px}.auth .card{padding:24px}.logo{font-weight:900;font-size:27px;margin-bottom:18px}.logo span{color:var(--red)}
+.hint{background:#f8fafc;border:1px dashed var(--bd);border-radius:8px;padding:10px;color:var(--mut);font-size:13px;margin:10px 0}
+.found{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:12px;margin:12px 0}
+.lock{background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:9px;color:#9a3412;font-size:13px;margin:10px 0}
 .actions{display:flex;gap:6px;flex-wrap:wrap}.total{text-align:right;font-weight:800;font-size:19px;margin-top:10px}
 @media(max-width:650px){header{align-items:flex-start}nav{margin:0;width:100%}nav button{flex:1;padding:8px 5px;font-size:12px}main{padding:10px}.card{padding:13px}table{min-width:650px}.scroll{overflow:auto}}
-@media print{header,main>*:not(#printArea){display:none!important}#printArea{display:block!important;background:white;color:black;padding:20px}#printArea table{min-width:0}}
+/* Documento impresso */
+#printArea{font:12px/1.4 Arial,sans-serif;color:#000;background:#fff}
+.doc{max-width:760px;margin:auto;padding:10px}
+.doc-head{display:flex;justify-content:space-between;gap:12px;border-bottom:2px solid #000;padding-bottom:8px}
+.doc-head h1{font-size:20px;margin:0}.doc-head .num{text-align:right}.doc-head .num b{font-size:16px;display:block}
+.doc h2{font-size:13px;background:#eee;padding:4px 6px;margin:12px 0 6px;text-transform:uppercase}
+.doc table{min-width:0}.doc th,.doc td{border:1px solid #999;padding:4px 6px;font-size:12px;color:#000}
+.doc .kv{display:grid;grid-template-columns:1fr 1fr;gap:2px 16px}
+.doc .tot td{font-weight:bold}.doc .sign{display:flex;gap:40px;margin-top:40px}.doc .sign div{flex:1;border-top:1px solid #000;text-align:center;padding-top:4px}
+.doc .foot{margin-top:14px;font-size:11px;text-align:center}
+.doc .big{font-size:15px;border:1px solid #000;padding:10px;margin:12px 0}
+@media print{body{background:#fff}#authView,#appView{display:none!important}#printArea{display:block!important}@page{margin:12mm}}
 </style>
 </head>
 <body>
 <div id="authView" class="auth">
-  <div class="card">
-    <div class="logo">CHAGAS <span>CAR</span></div>
-    <h1 id="authTitle">Entrar no sistema</h1>
-    <p class="muted" id="authSub">Acesse a gestão da sua oficina.</p>
-    <form id="loginForm">
-      <div id="registerFields" class="hidden">
-        <p><label>Nome da oficina</label><input id="officeName" autocomplete="organization"></p>
-        <p><label>Seu nome</label><input id="userName" autocomplete="name"></p>
-      </div>
-      <p><label>E-mail</label><input id="email" type="email" autocomplete="username" required></p>
-      <p><label>Senha</label><input id="password" type="password" autocomplete="current-password" minlength="8" required></p>
-      <button class="primary" style="width:100%" id="authSubmit">Entrar</button>
-      <div id="authError" class="error"></div>
-    </form>
-    <p class="muted" id="toggleText">Primeiro acesso? <a href="#" id="toggleAuth">Cadastrar minha oficina</a></p>
-    <div class="hint">O primeiro cadastro cria a oficina e o usuário administrador. Depois, o administrador poderá cadastrar funcionários.</div>
-  </div>
+ <div class="card">
+  <div class="logo">CHAGAS <span>CAR</span></div>
+  <h1 id="authTitle">Entrar no sistema</h1>
+  <p class="muted" id="authSub">Acesse a gestão da sua oficina.</p>
+  <form id="loginForm">
+   <div id="registerFields" class="hidden">
+    <p><label>Nome da oficina</label><input id="officeName" autocomplete="organization"></p>
+    <p><label>Seu nome</label><input id="userName" autocomplete="name"></p>
+   </div>
+   <p><label>E-mail</label><input id="email" type="email" autocomplete="username" required></p>
+   <p id="keyField" class="hidden"><label>Chave de recuperação (fornecida pelo administrador do sistema)</label><input id="resetKey" type="password"></p>
+   <p><label id="passLabel">Senha</label><input id="password" type="password" autocomplete="current-password" minlength="8" required></p>
+   <button class="primary" style="width:100%" id="authSubmit">Entrar</button>
+   <div id="authError" class="error"></div><div id="authOk" class="success"></div>
+  </form>
+  <p class="muted" id="forgotText"><a href="#" id="forgotLink">Esqueci minha senha</a></p>
+  <p class="muted" id="toggleText"></p>
+  <div class="hint">O primeiro cadastro cria a oficina e o usuário administrador. Depois, o administrador poderá cadastrar funcionários.</div>
+ </div>
 </div>
 
 <div id="appView" class="hidden">
@@ -59,63 +89,80 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:8px;bord
  </nav>
 </header>
 <main>
+
 <section id="view-orders">
- <h1>Ordens de serviço</h1><p class="muted">Acompanhe os serviços da sua oficina.</p>
+ <div class="top"><h1>Ordens de serviço</h1></div>
  <div class="stats" id="stats"></div>
  <div class="card">
-  <div class="bar"><input id="orderSearch" placeholder="Buscar por placa, cliente, veículo ou OS"><select id="orderStatus"><option value="">Todos os status</option><option value="aberta">Aberta</option><option value="andamento">Em andamento</option><option value="pronta">Pronta</option><option value="entregue">Entregue</option></select><button class="primary" id="newOrderBtn">+ Nova OS</button></div>
+  <div class="bar"><input id="orderSearch" placeholder="Buscar por placa, cliente, veículo ou nº da OS"><select id="orderStatus"><option value="">Todos os status</option><option value="aberta">Aberta</option><option value="andamento">Em andamento</option><option value="pronta">Pronta</option><option value="entregue">Entregue</option></select><button class="primary" id="newOrderBtn">+ Nova OS</button></div>
   <div id="orderList"></div>
  </div>
 </section>
 
 <section id="view-orderForm" class="hidden">
+ <div class="top"><button class="back">← Voltar</button><h1 id="orderFormTitle">Nova ordem de serviço</h1></div>
  <div class="card">
-  <h1 id="orderFormTitle">Nova ordem de serviço</h1>
+  <label>PLACA DO VEÍCULO</label>
+  <input id="oPlate" class="plate" maxlength="8" placeholder="ABC1D23" autocomplete="off">
+  <div class="hint" id="plateHint">Comece pela placa: se o veículo já veio aqui, o cliente, o carro e o histórico aparecem automaticamente.</div>
+  <div id="plateFound" class="found hidden"></div>
+  <div id="ownerLock" class="lock hidden">Cliente vinculado à placa. <button class="small" id="changeOwner">Trocar dono</button> <button class="small" id="editOwner">Corrigir dados do cliente</button></div>
   <div class="grid">
-   <div><label>Placa</label><input id="oPlate" maxlength="10" style="text-transform:uppercase"></div>
-   <div><label>Cliente</label><input id="oCustomer" list="customerOptions"><datalist id="customerOptions"></datalist></div>
-   <div><label>Telefone</label><input id="oPhone"></div>
-   <div><label>Veículo / modelo / ano</label><input id="oModel"></div>
+   <div><label>Cliente *</label><input id="oCustomer" list="customerOptions" autocomplete="off"><datalist id="customerOptions"></datalist></div>
+   <div><label>Telefone / WhatsApp</label><input id="oPhone" inputmode="tel"></div>
+   <div><label>Veículo / modelo / ano *</label><input id="oModel"></div>
    <div><label>Cor</label><input id="oColor"></div>
-   <div><label>Quilometragem</label><input id="oMileage" type="number" min="0"></div>
+   <div><label>Quilometragem atual</label><input id="oMileage" type="number" min="0"></div>
    <div><label>Data de entrada</label><input id="oDate" type="date"></div>
    <div><label>Status</label><select id="oStatus"><option value="aberta">Aberta</option><option value="andamento">Em andamento</option><option value="pronta">Pronta</option><option value="entregue">Entregue</option></select></div>
    <div><label>Forma de pagamento</label><select id="oPayment"><option value="">—</option><option>Dinheiro</option><option>Pix</option><option>Cartão de débito</option><option>Cartão de crédito</option><option>A combinar</option></select></div>
    <div><label>Data de retorno (opcional)</label><input id="oReturn" type="date"></div>
   </div>
-  <div class="hint" id="plateHint">Digite a placa para consultar o cadastro e o histórico anterior do veículo.</div>
+  <div id="orderLock" class="lock hidden">Esta OS foi entregue e está travada. Só o administrador pode alterar.</div>
   <p><label>Problema relatado / observações</label><textarea id="oComplaint"></textarea></p>
   <p><label>Garantia</label><input id="oWarranty" placeholder="Ex.: 90 dias na mão de obra"></p>
  </div>
  <div class="card">
   <h2>Peças e serviços</h2>
-  <div class="scroll"><table><thead><tr><th>Tipo</th><th>Descrição</th><th>Quantidade</th><th>Valor unitário (R$)</th><th>Subtotal</th><th></th></tr></thead><tbody id="orderItems"></tbody></table></div>
+  <div class="scroll"><table><thead><tr><th>Tipo</th><th>Descrição</th><th>Qtd</th><th>Valor unit. (R$)</th><th>Subtotal</th><th></th></tr></thead><tbody id="orderItems"></tbody></table></div>
   <div class="row"><button id="addService">+ Serviço</button><button id="addPart">+ Peça</button><div class="grow"></div><div style="width:150px"><label>Desconto (R$)</label><input id="oDiscount" type="number" min="0" step=".01" value="0"></div></div>
   <div class="total" id="orderTotal">Total: R$ 0,00</div>
  </div>
- <div class="row"><button class="primary" id="saveOrder">Salvar ordem</button><button id="savePrint">Salvar e imprimir</button><button id="cancelOrder">Cancelar</button></div>
+ <div class="row" style="margin-bottom:30px"><button class="primary" id="saveOrder">Salvar ordem</button><button id="savePrint">Salvar e imprimir OS</button><button id="saveReceipt">Salvar e imprimir recibo</button><button class="back">Voltar sem salvar</button></div>
 </section>
 
 <section id="view-customers" class="hidden">
- <h1>Clientes</h1><div class="card"><div class="bar"><input id="customerSearch" placeholder="Buscar cliente"><button class="primary" id="newCustomer">+ Cliente</button></div><div id="customerList"></div></div>
- <div class="card hidden" id="customerForm"><h2>Cadastro de cliente</h2><input type="hidden" id="cId"><div class="grid"><div><label>Nome</label><input id="cName"></div><div><label>Telefone</label><input id="cPhone"></div><div><label>CPF/CNPJ</label><input id="cDoc"></div><div><label>Endereço</label><input id="cAddress"></div></div><div class="row"><button class="primary" id="saveCustomer">Salvar cliente</button><button id="cancelCustomer">Cancelar</button></div></div>
+ <div class="top"><button class="back">← Voltar</button><h1>Clientes</h1></div>
+ <div class="card hidden" id="customerForm"><h2>Cadastro de cliente</h2><input type="hidden" id="cId">
+  <div class="grid"><div><label>Nome *</label><input id="cName"></div><div><label>Telefone</label><input id="cPhone"></div><div><label>CPF/CNPJ</label><input id="cDoc"></div><div><label>Endereço</label><input id="cAddress"></div></div>
+  <div class="row"><button class="primary" id="saveCustomer">Salvar</button><button id="cancelCustomer">Cancelar</button></div></div>
+ <div class="card"><div class="bar"><input id="customerSearch" placeholder="Buscar por nome, telefone ou placa"><button class="primary" id="newCustomer">+ Cliente</button></div><div id="customerList"></div></div>
 </section>
 
 <section id="view-vehicles" class="hidden">
- <h1>Veículos cadastrados</h1><div class="card"><div class="bar"><input id="vehicleSearch" placeholder="Buscar pela placa ou modelo"></div><div id="vehicleList"></div></div>
+ <div class="top"><button class="back">← Voltar</button><h1>Veículos cadastrados</h1></div>
+ <div class="card"><div class="bar"><input id="vehicleSearch" placeholder="Buscar pela placa, modelo ou cliente"></div><div id="vehicleList"></div></div>
 </section>
 
 <section id="view-history" class="hidden">
- <h1>Histórico completo</h1><p class="muted">Consulte todas as manutenções pela placa ou pelo cliente.</p>
- <div class="card"><div class="bar"><input id="historyPlate" placeholder="Digite a placa (ex.: ABC1D23)"><button class="primary" id="searchHistory">Consultar placa</button></div><div class="bar"><select id="historyCustomer"><option value="">Ou selecione um cliente</option></select><button id="searchCustomerHistory">Consultar cliente</button></div><div id="historyResults"></div></div>
+ <div class="top"><button class="back">← Voltar</button><h1>Histórico completo</h1></div>
+ <div class="card"><div class="bar"><input id="historyPlate" class="plate" style="font-size:18px;max-width:none" placeholder="Placa (ex.: ABC1D23)"><button class="primary" id="searchHistory">Consultar placa</button></div>
+ <div class="bar"><select id="historyCustomer"><option value="">Ou selecione um cliente</option></select><button id="searchCustomerHistory">Consultar cliente</button></div><div id="historyResults"></div></div>
 </section>
 
 <section id="view-settings" class="hidden">
- <h1>Dados da oficina</h1><div class="card"><div class="grid"><div><label>Nome</label><input id="sName"></div><div><label>Telefone</label><input id="sPhone"></div><div><label>Endereço</label><input id="sAddress"></div><div><label>CNPJ/CPF</label><input id="sDocument"></div><div><label>Horário</label><input id="sHours"></div><div><label>Mensagem no recibo</label><input id="sMessage"></div></div><div class="row"><button class="primary" id="saveOffice">Salvar dados</button></div><div id="settingsMsg" class="success"></div></div>
+ <div class="top"><button class="back">← Voltar</button><h1>Dados da oficina</h1></div>
+ <div class="card" id="officeCard"><p class="muted">Esses dados saem no cabeçalho da OS e do recibo.</p><div class="grid"><div><label>Nome</label><input id="sName"></div><div><label>Telefone</label><input id="sPhone"></div><div><label>Endereço</label><input id="sAddress"></div><div><label>CNPJ/CPF</label><input id="sDocument"></div><div><label>Horário</label><input id="sHours"></div><div><label>Mensagem no rodapé</label><input id="sMessage"></div></div>
+ <div class="row"><button class="primary" id="saveOffice">Salvar dados</button><span id="settingsMsg" class="success"></span></div></div>
+ <div class="card"><h2>Minha senha</h2><div class="grid"><div><label>Senha atual</label><input id="pCurrent" type="password"></div><div><label>Nova senha (mín. 8)</label><input id="pNew" type="password"></div></div>
+ <div class="row"><button id="changePass">Alterar senha</button><span id="passMsg" class="success"></span></div></div>
 </section>
 
 <section id="view-users" class="hidden">
- <h1>Usuários da oficina</h1><div class="card"><h2>Cadastrar funcionário</h2><div class="grid"><div><label>Nome</label><input id="uName"></div><div><label>E-mail</label><input id="uEmail" type="email"></div><div><label>Senha inicial (mínimo 8 caracteres)</label><input id="uPassword" type="password"></div></div><div class="row"><button class="primary" id="createUser">Cadastrar funcionário</button></div><div id="userMsg"></div></div><div class="card"><h2>Equipe</h2><div id="userList"></div></div>
+ <div class="top"><button class="back">← Voltar</button><h1>Usuários da oficina</h1></div>
+ <div class="card"><h2>Cadastrar funcionário</h2><div class="grid"><div><label>Nome</label><input id="uName"></div><div><label>E-mail</label><input id="uEmail" type="email"></div><div><label>Senha inicial (mínimo 8 caracteres)</label><input id="uPassword" type="password"></div></div>
+ <div class="row"><button class="primary" id="createUser">Cadastrar funcionário</button><span id="userMsg" class="success"></span></div></div>
+ <div class="card"><h2>Equipe</h2><div id="userList"></div></div>
 </section>
 </main>
 </div>
@@ -123,60 +170,247 @@ table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:8px;bord
 
 <script>
 const $ = id => document.getElementById(id);
-const state = { user:null, customers:[], vehicles:[], orders:[], currentOrder:null, items:[], office:null, authMode:"login" };
+const state = { user:null, customers:[], vehicles:[], orders:[], currentOrder:null, currentStatus:null, items:[], authMode:"login", viewStack:[], view:"orders", owner:null, transfer:false };
 const money = n => Number(n||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
 const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const dateBR = s => s ? new Date(String(s).slice(0,10)+"T12:00:00").toLocaleDateString("pt-BR") : "—";
+const cleanPlate = v => String(v||"").toUpperCase().replace(/[^A-Z0-9]/g,"");
+const fmtPlate = p => p.length===7 && /^[A-Z]{3}\d{4}$/.test(p) ? p.slice(0,3)+"-"+p.slice(3) : p;
+const isAdmin = () => state.user && state.user.role==="admin";
+const STATUS = {aberta:"Aberta",andamento:"Em andamento",pronta:"Pronta",entregue:"Entregue"};
+
 async function api(path, options={}) {
  const res = await fetch("/api/"+path,{credentials:"same-origin",headers:{"Content-Type":"application/json"},...options});
- const data = await res.json().catch(()=>({error:"Resposta inválida do servidor."}));
+ const data = await res.json().catch(()=>({error:"Resposta inválida do servidor ("+res.status+")."}));
  if(!res.ok) throw new Error(data.error||"Não foi possível concluir a operação.");
  return data;
 }
-function showAuth(mode){state.authMode=mode;const reg=mode==="register";$("registerFields").classList.toggle("hidden",!reg);$("authTitle").textContent=reg?"Cadastrar oficina":"Entrar no sistema";$("authSub").textContent=reg?"Crie o acesso principal da sua oficina.":"Acesse a gestão da sua oficina.";$("authSubmit").textContent=reg?"Criar oficina e administrador":"Entrar";$("toggleText").innerHTML=reg?'Já possui acesso? <a href="#" id="toggleAuth">Fazer login</a>':'Primeiro acesso? <a href="#" id="toggleAuth">Cadastrar minha oficina</a>';$("toggleAuth").onclick=e=>{e.preventDefault();showAuth(reg?"login":"register")};}
-$("toggleAuth").onclick=e=>{e.preventDefault();showAuth("register")};
-$("loginForm").onsubmit=async e=>{e.preventDefault();$("authError").textContent="";try{const body={email:$("email").value,password:$("password").value};if(state.authMode==="register"){body.officeName=$("officeName").value;body.name=$("userName").value;}await api("auth/"+(state.authMode==="register"?"register":"login"),{method:"POST",body:JSON.stringify(body)});await boot();}catch(err){$("authError").textContent=err.message}};
-$("logoutBtn").onclick=async()=>{await api("auth/logout",{method:"POST",body:"{}"});state.user=null;$("appView").classList.add("hidden");$("authView").classList.remove("hidden");$("password").value="";showAuth("login")};
 
-function setView(name){document.querySelectorAll("main section[id^='view-']").forEach(s=>s.classList.add("hidden"));$("view-"+name).classList.remove("hidden");if(name==="orders")loadOrders();if(name==="customers")loadCustomers();if(name==="vehicles")loadVehicles();if(name==="users")loadUsers();}
-document.querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>setView(b.dataset.view));
-async function boot(){try{const d=await api("me");state.user=d.user;state.office=d.user;$("authView").classList.add("hidden");$("appView").classList.remove("hidden");$("officeLabel").textContent=d.user.office_name+" · "+d.user.name;$("usersNav").classList.toggle("hidden",d.user.role!=="admin");fillSettings();setView("orders");await loadCustomers();}catch(e){$("authView").classList.remove("hidden");$("appView").classList.add("hidden")}}
-async function loadCustomers(){const d=await api("customers");state.customers=d.customers;$("customerOptions").innerHTML=state.customers.map(c=>`<option value="${esc(c.name)}">`).join("");$("historyCustomer").innerHTML='<option value="">Ou selecione um cliente</option>'+state.customers.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join("");if(!$("view-customers").classList.contains("hidden"))renderCustomers();}
-function renderCustomers(){const q=$("customerSearch").value.toLowerCase();const a=state.customers.filter(c=>c.name.toLowerCase().includes(q)||String(c.phone||"").includes(q));$("customerList").innerHTML=a.map(c=>`<div class="item"><div class="info"><b>${esc(c.name)}</b><div class="muted">${esc(c.phone||"Sem telefone")} · ${c.vehicle_count} veículo(s)</div></div><button onclick="editCustomer('${c.id}')">Editar</button><button onclick="customerHistory('${c.id}')">Histórico</button></div>`).join("")||'<p class="muted">Nenhum cliente encontrado.</p>';}
+/* ---------- Login / cadastro / recuperação ---------- */
+function showAuth(mode){
+ state.authMode=mode;const reg=mode==="register",rec=mode==="reset";
+ $("registerFields").classList.toggle("hidden",!reg);$("keyField").classList.toggle("hidden",!rec);
+ $("authTitle").textContent=reg?"Cadastrar oficina":rec?"Recuperar senha":"Entrar no sistema";
+ $("authSub").textContent=reg?"Crie o acesso principal da sua oficina.":rec?"Informe seu e-mail, a chave de recuperação e a nova senha.":"Acesse a gestão da sua oficina.";
+ $("passLabel").textContent=rec?"Nova senha (mín. 8 caracteres)":"Senha";
+ $("authSubmit").textContent=reg?"Criar oficina e administrador":rec?"Redefinir senha":"Entrar";
+ $("forgotText").classList.toggle("hidden",mode!=="login");
+ $("toggleText").innerHTML=mode==="login"?'Primeiro acesso? <a href="#" id="toggleAuth">Cadastrar minha oficina</a>':'<a href="#" id="toggleAuth">← Voltar para o login</a>';
+ $("toggleAuth").onclick=e=>{e.preventDefault();showAuth(mode==="login"?"register":"login")};
+ $("authError").textContent="";
+}
+$("forgotLink").onclick=e=>{e.preventDefault();$("authOk").textContent="";showAuth("reset")};
+$("loginForm").onsubmit=async e=>{e.preventDefault();$("authError").textContent="";$("authOk").textContent="";
+ try{
+  const body={email:$("email").value,password:$("password").value};
+  if(state.authMode==="reset"){body.key=$("resetKey").value;await api("auth/reset",{method:"POST",body:JSON.stringify(body)});$("password").value="";showAuth("login");$("authOk").textContent="Senha alterada. Entre com a nova senha.";return;}
+  if(state.authMode==="register"){body.officeName=$("officeName").value;body.name=$("userName").value;}
+  await api("auth/"+(state.authMode==="register"?"register":"login"),{method:"POST",body:JSON.stringify(body)});await boot();
+ }catch(err){$("authError").textContent=err.message}};
+$("logoutBtn").onclick=async()=>{await api("auth/logout",{method:"POST",body:"{}"}).catch(()=>{});state.user=null;$("appView").classList.add("hidden");$("authView").classList.remove("hidden");$("password").value="";showAuth("login")};
+
+/* ---------- Navegação com Voltar ---------- */
+function setView(name,{push=true}={}){
+ if(push && state.view && state.view!==name) state.viewStack.push(state.view);
+ state.view=name;
+ document.querySelectorAll("main section[id^='view-']").forEach(s=>s.classList.add("hidden"));
+ $("view-"+name).classList.remove("hidden");
+ document.querySelectorAll("nav [data-view]").forEach(b=>b.classList.toggle("on",b.dataset.view===name));
+ window.scrollTo(0,0);
+ if(name==="orders")loadOrders();if(name==="customers")loadCustomers();if(name==="vehicles")loadVehicles();if(name==="users")loadUsers();
+}
+function goBack(){const prev=state.viewStack.pop()||"orders";setView(prev===state.view?"orders":prev,{push:false});}
+document.querySelectorAll(".back").forEach(b=>b.onclick=goBack);
+document.querySelectorAll("nav [data-view]").forEach(b=>b.onclick=()=>setView(b.dataset.view));
+
+async function boot(){
+ try{const d=await api("me");state.user=d.user;
+  $("authView").classList.add("hidden");$("appView").classList.remove("hidden");
+  $("officeLabel").textContent=d.user.office_name+" · "+d.user.name;
+  $("usersNav").classList.toggle("hidden",!isAdmin());
+  fillSettings();state.viewStack=[];state.view=null;setView("orders",{push:false});await loadCustomers();
+ }catch(e){$("authView").classList.remove("hidden");$("appView").classList.add("hidden");showAuth("login")}
+}
+
+/* ---------- Clientes ---------- */
+async function loadCustomers(){
+ const d=await api("customers");state.customers=d.customers;
+ $("customerOptions").innerHTML=state.customers.map(c=>`<option value="${esc(c.name)}">${esc(c.phone||"")}${c.plates?" · "+esc(c.plates):""}</option>`).join("");
+ $("historyCustomer").innerHTML='<option value="">Ou selecione um cliente</option>'+state.customers.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join("");
+ if(state.view==="customers")renderCustomers();
+}
+function renderCustomers(){
+ const q=$("customerSearch").value.toLowerCase(),qd=q.replace(/\D/g,""),qp=cleanPlate(q);
+ const a=state.customers.filter(c=>c.name.toLowerCase().includes(q)||(qd&&String(c.phone||"").replace(/\D/g,"").includes(qd))||(qp&&String(c.plates||"").replace(/[^A-Z0-9,]/g,"").includes(qp)));
+ $("customerList").innerHTML=a.map(c=>`<div class="item"><div class="info"><b>${esc(c.name)}</b><div class="muted">${esc(c.phone||"Sem telefone")} · ${c.vehicle_count} veículo(s)${c.plates?" · "+esc(c.plates):""}</div></div><div class="actions"><button class="small" onclick="editCustomer('${c.id}')">Editar</button><button class="small" onclick="customerHistory('${c.id}')">Histórico</button>${isAdmin()?`<button class="small danger" onclick="delCustomer('${c.id}')">Excluir</button>`:""}</div></div>`).join("")||'<p class="muted">Nenhum cliente encontrado.</p>';
+}
 $("customerSearch").oninput=renderCustomers;
-$("newCustomer").onclick=()=>{["cId","cName","cPhone","cDoc","cAddress"].forEach(id=>$(id).value="");$("customerForm").classList.remove("hidden")};
+$("newCustomer").onclick=()=>{["cId","cName","cPhone","cDoc","cAddress"].forEach(id=>$(id).value="");$("customerForm").classList.remove("hidden");$("cName").focus()};
 $("cancelCustomer").onclick=()=>$("customerForm").classList.add("hidden");
-window.editCustomer=id=>{const c=state.customers.find(x=>x.id===id);if(!c)return;$("cId").value=c.id;$("cName").value=c.name;$("cPhone").value=c.phone||"";$("cDoc").value=c.document||"";$("cAddress").value=c.address||"";$("customerForm").classList.remove("hidden")};
-$("saveCustomer").onclick=async()=>{try{const b={name:$("cName").value,phone:$("cPhone").value,document:$("cDoc").value,address:$("cAddress").value};await api("customers"+($("cId").value?"/"+$("cId").value:""),{method:$("cId").value?"PUT":"POST",body:JSON.stringify(b)});$("customerForm").classList.add("hidden");await loadCustomers();renderCustomers();alert("Cliente salvo.");}catch(e){alert(e.message)}};
-window.customerHistory=id=>{$("historyCustomer").value=id;setView("history");searchCustomerHistory()};
+window.editCustomer=id=>{const c=state.customers.find(x=>x.id===id);if(!c)return;if(state.view!=="customers")setView("customers");$("cId").value=c.id;$("cName").value=c.name;$("cPhone").value=c.phone||"";$("cDoc").value=c.document||"";$("cAddress").value=c.address||"";$("customerForm").classList.remove("hidden");window.scrollTo(0,0)};
+$("saveCustomer").onclick=async()=>{try{if(!$("cName").value.trim())return alert("Informe o nome do cliente.");const b={name:$("cName").value,phone:$("cPhone").value,document:$("cDoc").value,address:$("cAddress").value};await api("customers"+($("cId").value?"/"+$("cId").value:""),{method:$("cId").value?"PUT":"POST",body:JSON.stringify(b)});$("customerForm").classList.add("hidden");await loadCustomers();renderCustomers();}catch(e){alert(e.message)}};
+window.delCustomer=async id=>{const c=state.customers.find(x=>x.id===id);if(!c||!confirm(`Excluir o cliente "${c.name}"?\n\nIsso apaga também os veículos e TODAS as ordens de serviço dele. Não dá para desfazer.`))return;try{await api("customers/"+id,{method:"DELETE"});await loadCustomers();renderCustomers()}catch(e){alert(e.message)}};
+window.customerHistory=id=>{setView("history");$("historyCustomer").value=id;searchCustomerHistory()};
 
-async function loadVehicles(){const d=await api("vehicles");state.vehicles=d.vehicles;renderVehicles();}
-function renderVehicles(){const q=$("vehicleSearch").value.toLowerCase();const a=state.vehicles.filter(v=>(v.plate+" "+v.model+" "+v.customer_name).toLowerCase().includes(q));$("vehicleList").innerHTML=a.map(v=>`<div class="item"><div class="info"><b>${esc(v.plate)}</b><div class="muted">${esc(v.model)} · ${esc(v.customer_name)}</div></div><button onclick="$('historyPlate').value='${esc(v.plate)}';setView('history');searchHistory()">Ver histórico</button></div>`).join("")||'<p class="muted">Nenhum veículo cadastrado.</p>';}
+/* ---------- Veículos ---------- */
+async function loadVehicles(){try{const d=await api("vehicles");state.vehicles=d.vehicles;renderVehicles()}catch(e){$("vehicleList").textContent=e.message}}
+function renderVehicles(){
+ const q=$("vehicleSearch").value.toLowerCase(),qp=cleanPlate(q);
+ const a=state.vehicles.filter(v=>(v.model+" "+v.customer_name).toLowerCase().includes(q)||(qp&&v.plate.includes(qp)));
+ $("vehicleList").innerHTML=a.map(v=>`<div class="item"><div class="info"><b>${esc(fmtPlate(v.plate))}</b><div class="muted">${esc(v.model||"Modelo não informado")}${v.color?" · "+esc(v.color):""} · ${esc(v.customer_name)}</div></div><div class="actions"><button class="small primary" onclick="newOrder('${esc(v.plate)}')">Nova OS</button><button class="small" onclick="plateHistory('${esc(v.plate)}')">Histórico</button>${isAdmin()?`<button class="small danger" onclick="delVehicle('${v.id}','${esc(v.plate)}')">Excluir</button>`:""}</div></div>`).join("")||'<p class="muted">Nenhum veículo cadastrado.</p>';
+}
 $("vehicleSearch").oninput=renderVehicles;
+window.plateHistory=p=>{setView("history");$("historyPlate").value=p;searchHistory()};
+window.delVehicle=async(id,plate)=>{if(!confirm(`Excluir o veículo ${plate}?\n\nIsso apaga também TODAS as ordens de serviço dessa placa. Não dá para desfazer.`))return;try{await api("vehicles/"+id,{method:"DELETE"});loadVehicles()}catch(e){alert(e.message)}};
 
-async function loadOrders(){try{const d=await api("orders?q="+encodeURIComponent($("orderSearch").value)+"&status="+encodeURIComponent($("orderStatus").value));state.orders=d.orders;const open=state.orders.filter(o=>["aberta","andamento"].includes(o.status)).length;const ready=state.orders.filter(o=>o.status==="pronta").length;const total=state.orders.reduce((s,o)=>s+Number(o.total||0),0);$("stats").innerHTML=`<div class="stat"><b>${open}</b><span class="muted">Em aberto</span></div><div class="stat"><b>${ready}</b><span class="muted">Prontas</span></div><div class="stat"><b>${money(total)}</b><span class="muted">Total listado</span></div>`;$("orderList").innerHTML=state.orders.map(o=>`<div class="item"><div class="info"><b>OS #${o.order_number} · ${esc(o.customer_name)}</b><div class="muted">${esc(o.vehicle_model)} · ${esc(o.plate)} · ${dateBR(o.entry_date)}</div></div><span class="tag ${o.status}">${o.status}</span><b>${money(o.total)}</b><div class="actions"><button onclick="editOrder('${o.id}')">Abrir</button><button onclick="printOrder('${o.id}')">Imprimir</button></div></div>`).join("")||'<p class="muted">Nenhuma ordem cadastrada.</p>';}catch(e){$("orderList").textContent=e.message}}
-$("orderSearch").oninput=()=>loadOrders();$("orderStatus").onchange=loadOrders;$("newOrderBtn").onclick=()=>newOrder();
-function newOrder(){state.currentOrder=null;state.items=[{kind:"servico",description:"",quantity:1,unit_price:0}];["oPlate","oCustomer","oPhone","oModel","oColor","oMileage","oComplaint","oWarranty","oReturn","oDiscount"].forEach(id=>$(id).value="");$("oDate").value=new Date().toISOString().slice(0,10);$("oStatus").value="aberta";$("oPayment").value="";$("orderFormTitle").textContent="Nova ordem de serviço";renderItems();$("plateHint").textContent="Digite a placa para consultar o cadastro e o histórico anterior do veículo.";setView("orderForm");}
-$("oPlate").onchange=async()=>{const plate=$("oPlate").value.toUpperCase().replace(/[^A-Z0-9]/g,"");if(plate.length<6)return;try{const d=await api("vehicles?plate="+encodeURIComponent(plate));if(d.vehicle){$("oCustomer").value=d.vehicle.customer_name;$("oPhone").value=d.vehicle.customer_phone||"";$("oModel").value=d.vehicle.model||"";$("oColor").value=d.vehicle.color||"";$("plateHint").textContent="Veículo localizado. Consulte o histórico na aba Histórico.";}else{$("plateHint").textContent="Placa ainda não cadastrada. O veículo será incluído ao salvar a OS."}}catch(e){$("plateHint").textContent=e.message}};
-window.editOrder=async id=>{try{const d=await api("orders/"+id);const o=d.order;state.currentOrder=id;state.items=d.items.map(i=>({kind:i.kind,description:i.description,quantity:i.quantity,unit_price:i.unit_price}));$("oPlate").value=o.plate;$("oCustomer").value=o.customer_name;$("oPhone").value=o.customer_phone||"";$("oModel").value=o.vehicle_model||"";$("oColor").value=o.color||"";$("oMileage").value=o.mileage??"";$("oDate").value=String(o.entry_date).slice(0,10);$("oStatus").value=o.status;$("oPayment").value=o.payment_method||"";$("oReturn").value=o.return_date?String(o.return_date).slice(0,10):"";$("oComplaint").value=o.complaint||"";$("oWarranty").value=o.warranty||"";$("oDiscount").value=o.discount||0;$("orderFormTitle").textContent="Editar OS #"+o.order_number;renderItems();setView("orderForm");}catch(e){alert(e.message)}};
-function renderItems(){$("orderItems").innerHTML=state.items.map((it,i)=>`<tr><td><select onchange="state.items[${i}].kind=this.value"><option value="servico" ${it.kind==="servico"?"selected":""}>Serviço</option><option value="peca" ${it.kind==="peca"?"selected":""}>Peça</option></select></td><td><input value="${esc(it.description)}" onchange="state.items[${i}].description=this.value"></td><td><input type="number" min=".01" step=".01" value="${it.quantity}" onchange="state.items[${i}].quantity=this.value;calcTotal()"></td><td><input type="number" min="0" step=".01" value="${it.unit_price}" onchange="state.items[${i}].unit_price=this.value;calcTotal()"></td><td>${money(Number(it.quantity)*Number(it.unit_price))}</td><td><button onclick="removeItem(${i})">×</button></td></tr>`).join("");calcTotal();}
-window.removeItem=i=>{state.items.splice(i,1);renderItems()};$("addService").onclick=()=>{state.items.push({kind:"servico",description:"",quantity:1,unit_price:0});renderItems()};$("addPart").onclick=()=>{state.items.push({kind:"peca",description:"",quantity:1,unit_price:0});renderItems()};
+/* ---------- Ordens ---------- */
+let searchTimer;
+async function loadOrders(){try{
+ const d=await api("orders?q="+encodeURIComponent($("orderSearch").value)+"&status="+encodeURIComponent($("orderStatus").value));state.orders=d.orders;
+ const open=state.orders.filter(o=>["aberta","andamento"].includes(o.status)).length,ready=state.orders.filter(o=>o.status==="pronta").length,total=state.orders.reduce((s,o)=>s+Number(o.total||0),0);
+ $("stats").innerHTML=`<div class="stat"><b>${open}</b><span class="muted">Em aberto</span></div><div class="stat"><b>${ready}</b><span class="muted">Prontas</span></div><div class="stat"><b>${money(total)}</b><span class="muted">Total listado</span></div>`;
+ $("orderList").innerHTML=state.orders.map(o=>`<div class="item"><div class="info"><b>OS #${o.order_number} · ${esc(fmtPlate(o.plate))} · ${esc(o.customer_name)}</b><div class="muted">${esc(o.vehicle_model)} · ${dateBR(o.entry_date)}</div></div><span class="tag ${o.status}">${STATUS[o.status]}</span><b>${money(o.total)}</b><div class="actions"><button class="small" onclick="editOrder('${o.id}')">Abrir</button><button class="small" onclick="printDoc('${o.id}','os')">Imprimir OS</button><button class="small" onclick="printDoc('${o.id}','recibo')">Recibo</button>${isAdmin()?`<button class="small danger" onclick="delOrder('${o.id}',${o.order_number})">Excluir</button>`:""}</div></div>`).join("")||'<p class="muted">Nenhuma ordem encontrada.</p>';
+}catch(e){$("orderList").textContent=e.message}}
+$("orderSearch").oninput=()=>{clearTimeout(searchTimer);searchTimer=setTimeout(loadOrders,300)};$("orderStatus").onchange=loadOrders;$("newOrderBtn").onclick=()=>newOrder();
+window.delOrder=async(id,n)=>{if(!confirm(`Excluir a OS #${n}? Não dá para desfazer.`))return;try{await api("orders/"+id,{method:"DELETE"});loadOrders()}catch(e){alert(e.message)}};
+
+const custFields=["oCustomer","oPhone"];
+function lockOwner(on){state.owner=on?state.owner:null;custFields.forEach(id=>$(id).readOnly=!!on);$("ownerLock").classList.toggle("hidden",!on);}
+function setOrderLocked(locked){
+ const ro=locked&&!isAdmin();
+ document.querySelectorAll("#view-orderForm input,#view-orderForm select,#view-orderForm textarea").forEach(el=>{if(!custFields.includes(el.id))el.disabled=ro});
+ ["addService","addPart","saveOrder"].forEach(id=>$(id).disabled=ro);
+ $("orderLock").classList.toggle("hidden",!locked);
+ $("orderLock").textContent=isAdmin()?"OS entregue. Você é administrador e pode alterar, mas cuidado.":"Esta OS foi entregue e está travada. Só o administrador pode alterar.";
+}
+function newOrder(plate=""){
+ state.currentOrder=null;state.currentStatus=null;state.transfer=false;state.owner=null;state.items=[{kind:"servico",description:"",quantity:1,unit_price:0}];
+ ["oPlate","oCustomer","oPhone","oModel","oColor","oMileage","oComplaint","oWarranty","oReturn"].forEach(id=>$(id).value="");$("oDiscount").value=0;
+ $("oDate").value=new Date().toLocaleDateString("sv-SE");$("oStatus").value="aberta";$("oPayment").value="";
+ $("orderFormTitle").textContent="Nova ordem de serviço";$("plateFound").classList.add("hidden");lockOwner(false);setOrderLocked(false);
+ $("plateHint").textContent="Comece pela placa: se o veículo já veio aqui, o cliente, o carro e o histórico aparecem automaticamente.";
+ renderItems();setView("orderForm");
+ if(plate){$("oPlate").value=fmtPlate(plate);lookupPlate();}else $("oPlate").focus();
+}
+window.newOrder=newOrder;
+let plateTimer,lastLookup="";
+$("oPlate").oninput=()=>{const p=cleanPlate($("oPlate").value);$("oPlate").value=p;clearTimeout(plateTimer);if(p.length>=7)plateTimer=setTimeout(lookupPlate,250);else if(!state.currentOrder){$("plateFound").classList.add("hidden");if(state.owner){lockOwner(false);["oCustomer","oPhone","oModel","oColor"].forEach(id=>$(id).value="")}}};
+async function lookupPlate(){
+ const plate=cleanPlate($("oPlate").value);if(plate.length<7||plate===lastLookup&&state.owner)return;lastLookup=plate;
+ try{const d=await api("vehicles?plate="+encodeURIComponent(plate));
+  if(d.vehicle){const v=d.vehicle;
+   state.owner={id:v.customer_id,name:v.customer_name};state.transfer=false;
+   $("oCustomer").value=v.customer_name;$("oPhone").value=v.customer_phone||"";$("oModel").value=v.model||"";$("oColor").value=v.color||"";
+   lockOwner(true);
+   const lastKm=(d.last.find(o=>o.mileage!=null)||{}).mileage;
+   $("plateFound").innerHTML=`<b>✔ Veículo encontrado:</b> ${esc(v.model||"")} ${v.color?"· "+esc(v.color):""} — cliente <b>${esc(v.customer_name)}</b> ${v.customer_phone?"· "+esc(v.customer_phone):""}
+    ${lastKm!=null?`<div class="muted">Última quilometragem registrada: <b>${Number(lastKm).toLocaleString("pt-BR")} km</b></div>`:""}
+    ${d.last.length?`<div style="margin-top:6px"><b>Últimas passagens:</b>${d.last.map(o=>`<div class="muted">OS #${o.order_number} · ${dateBR(o.entry_date)} · ${STATUS[o.status]} · ${money(o.total)} — ${esc(o.services||o.complaint||"sem itens")}</div>`).join("")}</div>`:'<div class="muted">Nenhuma OS anterior.</div>'}`;
+   $("plateFound").classList.remove("hidden");$("plateHint").textContent="Dados puxados pela placa. Confira a quilometragem e descreva o problema.";
+   $("oMileage").focus();
+  }else{
+   if(!state.currentOrder){lockOwner(false);}
+   $("plateFound").classList.add("hidden");$("plateHint").textContent="Placa nova: preencha cliente e veículo. Tudo fica gravado ao salvar a OS.";$("oCustomer").focus();
+  }
+ }catch(e){$("plateHint").textContent=e.message}
+}
+$("oCustomer").onchange=()=>{if(state.owner&&!state.transfer)return;const c=state.customers.find(x=>x.name.toLowerCase()===$("oCustomer").value.trim().toLowerCase());if(c&&!$("oPhone").value)$("oPhone").value=c.phone||""};
+$("changeOwner").onclick=()=>{if(!confirm("Transferir este veículo para outro cliente? As OS antigas continuam no histórico da placa."))return;state.transfer=true;state.owner=null;lockOwner(false);$("oCustomer").value="";$("oPhone").value="";$("plateHint").textContent="Informe o novo dono. Ao salvar, a placa passa para ele.";$("oCustomer").focus()};
+$("editOwner").onclick=()=>{custFields.forEach(id=>$(id).readOnly=false);$("oCustomer").focus();$("plateHint").textContent="Corrigindo os dados do cliente atual (o veículo continua com ele)."};
+
+window.editOrder=async id=>{try{
+ const d=await api("orders/"+id);const o=d.order;state.currentOrder=id;state.currentStatus=o.status;state.transfer=false;
+ state.owner={id:o.customer_id,name:o.customer_name};
+ state.items=d.items.map(i=>({kind:i.kind,description:i.description,quantity:Number(i.quantity),unit_price:Number(i.unit_price)}));
+ $("oPlate").value=o.plate;lastLookup=o.plate;$("oCustomer").value=o.customer_name;$("oPhone").value=o.customer_phone||"";$("oModel").value=o.vehicle_model||"";$("oColor").value=o.color||"";$("oMileage").value=o.mileage??"";
+ $("oDate").value=String(o.entry_date).slice(0,10);$("oStatus").value=o.status;$("oPayment").value=o.payment_method||"";$("oReturn").value=o.return_date?String(o.return_date).slice(0,10):"";
+ $("oComplaint").value=o.complaint||"";$("oWarranty").value=o.warranty||"";$("oDiscount").value=Number(o.discount)||0;
+ $("orderFormTitle").textContent="OS #"+o.order_number;$("plateFound").classList.add("hidden");$("plateHint").textContent="Editando ordem existente.";
+ renderItems();setView("orderForm");lockOwner(true);setOrderLocked(o.status==="entregue");
+}catch(e){alert(e.message)}};
+function renderItems(){
+ $("orderItems").innerHTML=state.items.map((it,i)=>`<tr><td><select onchange="state.items[${i}].kind=this.value"><option value="servico" ${it.kind==="servico"?"selected":""}>Serviço</option><option value="peca" ${it.kind==="peca"?"selected":""}>Peça</option></select></td><td><input value="${esc(it.description)}" oninput="state.items[${i}].description=this.value" placeholder="Descrição"></td><td style="width:80px"><input type="number" min=".01" step=".01" value="${it.quantity}" oninput="state.items[${i}].quantity=this.value;updSub(${i})"></td><td style="width:120px"><input type="number" min="0" step=".01" value="${it.unit_price}" oninput="state.items[${i}].unit_price=this.value;updSub(${i})"></td><td id="sub${i}">${money(Number(it.quantity)*Number(it.unit_price))}</td><td><button class="small danger" onclick="removeItem(${i})">×</button></td></tr>`).join("");
+ calcTotal();if(state.currentStatus==="entregue")setOrderLocked(true);
+}
+window.updSub=i=>{const it=state.items[i];$("sub"+i).textContent=money(Number(it.quantity)*Number(it.unit_price));calcTotal()};
+window.removeItem=i=>{state.items.splice(i,1);renderItems()};
+$("addService").onclick=()=>{state.items.push({kind:"servico",description:"",quantity:1,unit_price:0});renderItems()};
+$("addPart").onclick=()=>{state.items.push({kind:"peca",description:"",quantity:1,unit_price:0});renderItems()};
 function calcTotal(){const t=state.items.reduce((s,i)=>s+Number(i.quantity||0)*Number(i.unit_price||0),0)-Number($("oDiscount").value||0);$("orderTotal").textContent="Total: "+money(Math.max(0,t));}
 $("oDiscount").oninput=calcTotal;
-async function saveOrder(print){try{const b={customer_name:$("oCustomer").value,customer_phone:$("oPhone").value,plate:$("oPlate").value,vehicle_model:$("oModel").value,color:$("oColor").value,mileage:$("oMileage").value,entry_date:$("oDate").value,status:$("oStatus").value,payment_method:$("oPayment").value,return_date:$("oReturn").value||null,complaint:$("oComplaint").value,warranty:$("oWarranty").value,discount:$("oDiscount").value,items:state.items};const d=await api("orders"+(state.currentOrder?"/"+state.currentOrder:""),{method:state.currentOrder?"PUT":"POST",body:JSON.stringify(b)});alert("Ordem salva com sucesso.");if(print)await printOrder(d.order.id);setView("orders");}catch(e){alert(e.message)}}
-$("saveOrder").onclick=()=>saveOrder(false);$("savePrint").onclick=()=>saveOrder(true);$("cancelOrder").onclick=()=>setView("orders");
+async function saveOrder(print){
+ const plate=cleanPlate($("oPlate").value);
+ if(plate.length<7)return alert("Informe a placa completa (7 caracteres).");
+ if(!$("oCustomer").value.trim())return alert("Informe o cliente.");
+ if(!$("oModel").value.trim())return alert("Informe o veículo/modelo.");
+ if(!state.items.some(i=>String(i.description).trim())&&!confirm("A OS está sem peças/serviços. Salvar mesmo assim?"))return;
+ try{
+  const b={customer_id:state.owner&&!state.transfer?state.owner.id:null,transfer_owner:state.transfer,customer_name:$("oCustomer").value.trim(),customer_phone:$("oPhone").value,plate,vehicle_model:$("oModel").value,color:$("oColor").value,mileage:$("oMileage").value,entry_date:$("oDate").value,status:$("oStatus").value,payment_method:$("oPayment").value,return_date:$("oReturn").value||null,complaint:$("oComplaint").value,warranty:$("oWarranty").value,discount:$("oDiscount").value,items:state.items};
+  const d=await api("orders"+(state.currentOrder?"/"+state.currentOrder:""),{method:state.currentOrder?"PUT":"POST",body:JSON.stringify(b)});
+  await loadCustomers();
+  if(print)await printDoc(d.order.id,print);
+  state.viewStack=[];setView("orders",{push:false});
+ }catch(e){alert(e.message)}
+}
+$("saveOrder").onclick=()=>saveOrder(false);$("savePrint").onclick=()=>saveOrder("os");$("saveReceipt").onclick=()=>saveOrder("recibo");
 
-async function searchHistory(){const plate=$("historyPlate").value.trim();if(!plate)return alert("Digite uma placa.");try{const d=await api("history?plate="+encodeURIComponent(plate));renderHistory(d.history)}catch(e){$("historyResults").textContent=e.message}}
+/* ---------- Histórico ---------- */
+async function searchHistory(){const plate=cleanPlate($("historyPlate").value);if(!plate)return alert("Digite uma placa.");try{const d=await api("history?plate="+encodeURIComponent(plate));renderHistory(d.history)}catch(e){$("historyResults").textContent=e.message}}
 async function searchCustomerHistory(){const id=$("historyCustomer").value;if(!id)return alert("Selecione um cliente.");try{const d=await api("history?customer_id="+encodeURIComponent(id));renderHistory(d.history)}catch(e){$("historyResults").textContent=e.message}}
-$("searchHistory").onclick=searchHistory;$("searchCustomerHistory").onclick=searchCustomerHistory;
-function renderHistory(rows){$("historyResults").innerHTML=rows.length?rows.map(o=>`<div class="item"><div class="info"><b>OS #${o.order_number} · ${esc(o.plate)} · ${esc(o.customer_name)}</b><div class="muted">${dateBR(o.entry_date)} · ${esc(o.vehicle_model)} · ${o.mileage??"Km não informado"} km</div><div>${esc(o.complaint||"Sem observações")}</div><div class="muted">${(o.items||[]).map(i=>esc(i.kind==="peca"?"Peça: ":"Serviço: ")+esc(i.description)).join(" · ")}</div><div class="muted">Garantia: ${esc(o.warranty||"Não informada")} · Retorno: ${dateBR(o.return_date)}</div></div><span class="tag ${o.status}">${o.status}</span><b>${money(o.total)}</b></div>`).join(""):'<p class="muted">Nenhuma manutenção encontrada.</p>';}
+$("searchHistory").onclick=searchHistory;$("historyPlate").onkeydown=e=>{if(e.key==="Enter")searchHistory()};$("searchCustomerHistory").onclick=searchCustomerHistory;
+function renderHistory(rows){$("historyResults").innerHTML=rows.length?rows.map(o=>`<div class="item"><div class="info"><b>OS #${o.order_number} · ${esc(fmtPlate(o.plate))} · ${esc(o.customer_name)}</b><div class="muted">${dateBR(o.entry_date)} · ${esc(o.vehicle_model)} · ${o.mileage!=null?Number(o.mileage).toLocaleString("pt-BR")+" km":"Km não informado"}</div><div>${esc(o.complaint||"Sem observações")}</div><div class="muted">${(o.items||[]).map(i=>(i.kind==="peca"?"Peça: ":"Serviço: ")+esc(i.description)).join(" · ")}</div><div class="muted">Garantia: ${esc(o.warranty||"Não informada")} · Retorno: ${dateBR(o.return_date)}</div></div><span class="tag ${o.status}">${STATUS[o.status]}</span><b>${money(o.total)}</b><div class="actions"><button class="small" onclick="editOrder('${o.id}')">Abrir</button><button class="small" onclick="printDoc('${o.id}','os')">OS</button><button class="small" onclick="printDoc('${o.id}','recibo')">Recibo</button></div></div>`).join(""):'<p class="muted">Nenhuma manutenção encontrada.</p>';}
 
-async function printOrder(id){try{const d=await api("orders/"+id);const o=d.order;const sum=d.items.reduce((s,i)=>s+Number(i.quantity)*Number(i.unit_price),0)-Number(o.discount||0);$("printArea").innerHTML=`<h1>${esc(o.office_name)}</h1><p>${esc(o.office_address||"")} · ${esc(o.office_phone||"")}</p><hr><h2>ORDEM DE SERVIÇO #${o.order_number}</h2><p>Data: ${dateBR(o.entry_date)}</p><p><b>Cliente:</b> ${esc(o.customer_name)} · ${esc(o.customer_phone)}</p><p><b>Veículo:</b> ${esc(o.vehicle_model)} · <b>Placa:</b> ${esc(o.plate)} · <b>Km:</b> ${o.mileage??"—"}</p><p><b>Relato:</b> ${esc(o.complaint)}</p><table><tr><th>Tipo</th><th>Descrição</th><th>Qtd</th><th>Valor</th></tr>${d.items.map(i=>`<tr><td>${i.kind==="peca"?"Peça":"Serviço"}</td><td>${esc(i.description)}</td><td>${i.quantity}</td><td>${money(i.unit_price)}</td></tr>`).join("")}</table><h2 style="text-align:right">TOTAL: ${money(Math.max(0,sum))}</h2><p>Pagamento: ${esc(o.payment_method)} · Garantia: ${esc(o.warranty)}</p><p>${esc(o.receipt_message||"")}</p><br><br><p>__________________________________<br>Assinatura do cliente</p>`;$("printArea").classList.remove("hidden");window.print();$("printArea").classList.add("hidden");}catch(e){alert(e.message)}}
-async function fillSettings(){const u=state.user;$("sName").value=u.office_name||"";$("sPhone").value=u.phone||"";$("sAddress").value=u.address||"";$("sDocument").value=u.document||"";$("sHours").value=u.business_hours||"";$("sMessage").value=u.receipt_message||"";}
-$("saveOffice").onclick=async()=>{try{const d=await api("office",{method:"PUT",body:JSON.stringify({name:$("sName").value,phone:$("sPhone").value,address:$("sAddress").value,document:$("sDocument").value,business_hours:$("sHours").value,receipt_message:$("sMessage").value})});Object.assign(state.user,{office_name:d.office.name,phone:d.office.phone,address:d.office.address,document:d.office.document,business_hours:d.office.business_hours,receipt_message:d.office.receipt_message});$("officeLabel").textContent=d.office.name+" · "+state.user.name;$("settingsMsg").textContent="Dados salvos.";}catch(e){$("settingsMsg").textContent=e.message}}
-async function loadUsers(){try{const d=await api("users");$("userList").innerHTML=d.users.map(u=>`<div class="item"><div class="info"><b>${esc(u.name)}</b><div class="muted">${esc(u.email)} · ${u.role==="admin"?"Administrador":"Funcionário"}</div></div><span class="tag">${u.active?"Ativo":"Inativo"}</span>${u.role!=="admin"?`<button onclick="toggleUser('${u.id}',${!u.active})">${u.active?"Desativar":"Ativar"}</button>`:""}</div>`).join("")||"Nenhum usuário.";}catch(e){$("userList").textContent=e.message}}
+/* ---------- Documentos padronizados: OS e Recibo ---------- */
+function extenso(v){ // valor por extenso simples (reais e centavos)
+ const u=["","um","dois","três","quatro","cinco","seis","sete","oito","nove","dez","onze","doze","treze","quatorze","quinze","dezesseis","dezessete","dezoito","dezenove"],d=["","","vinte","trinta","quarenta","cinquenta","sessenta","setenta","oitenta","noventa"],c=["","cento","duzentos","trezentos","quatrocentos","quinhentos","seiscentos","setecentos","oitocentos","novecentos"];
+ const ate999=n=>{if(n===0)return"";if(n===100)return"cem";const p=[];if(n>=100){p.push(c[Math.floor(n/100)]);n%=100}if(n>=20){p.push(d[Math.floor(n/10)]);n%=10;if(n)p.push(u[n])}else if(n)p.push(u[n]);return p.join(" e ")};
+ const num=n=>{if(n===0)return"zero";const m=Math.floor(n/1e6),k=Math.floor(n%1e6/1000),r=n%1000,p=[];if(m)p.push(ate999(m)+(m===1?" milhão":" milhões"));if(k)p.push(k===1?"mil":ate999(k)+" mil");if(r)p.push(ate999(r));return p.join(r&&r<=100||r%100===0&&r?" e ":" ")};
+ const r=Math.floor(v),ct=Math.round((v-r)*100);let s=r?num(r)+(r===1?" real":" reais"):"";if(ct)s+=(s?" e ":"")+num(ct)+(ct===1?" centavo":" centavos");return s||"zero reais";
+}
+window.printDoc=async(id,type)=>{try{
+ const d=await api("orders/"+id),o=d.order,items=d.items;
+ const sub=items.reduce((s,i)=>s+Number(i.quantity)*Number(i.unit_price),0),disc=Number(o.discount||0),total=Math.max(0,sub-disc);
+ const head=title=>`<div class="doc-head"><div><h1>${esc(o.office_name)}</h1><div>${esc(o.office_address||"")}</div><div>${o.office_phone?"Tel/WhatsApp: "+esc(o.office_phone):""}${o.office_document?" · CNPJ/CPF: "+esc(o.office_document):""}</div>${o.business_hours?`<div>${esc(o.business_hours)}</div>`:""}</div><div class="num"><b>${title}</b>Nº ${String(o.order_number).padStart(5,"0")}<br>${dateBR(o.entry_date)}</div></div>`;
+ const cliente=`<h2>Cliente</h2><div class="kv"><div><b>Nome:</b> ${esc(o.customer_name)}</div><div><b>Telefone:</b> ${esc(o.customer_phone||"—")}</div><div><b>CPF/CNPJ:</b> ${esc(o.customer_document||"—")}</div><div><b>Endereço:</b> ${esc(o.customer_address||"—")}</div></div>`;
+ const veiculo=`<h2>Veículo</h2><div class="kv"><div><b>Placa:</b> ${esc(fmtPlate(o.plate))}</div><div><b>Modelo:</b> ${esc(o.vehicle_model||"—")}</div><div><b>Cor:</b> ${esc(o.color||"—")}</div><div><b>Km:</b> ${o.mileage!=null?Number(o.mileage).toLocaleString("pt-BR"):"—"}</div></div>`;
+ const tabela=`<h2>Peças e serviços</h2><table><tr><th>Tipo</th><th>Descrição</th><th style="width:50px">Qtd</th><th style="width:90px">Unit.</th><th style="width:100px">Subtotal</th></tr>${items.map(i=>`<tr><td>${i.kind==="peca"?"Peça":"Serviço"}</td><td>${esc(i.description)}</td><td>${Number(i.quantity).toLocaleString("pt-BR")}</td><td>${money(i.unit_price)}</td><td>${money(Number(i.quantity)*Number(i.unit_price))}</td></tr>`).join("")||'<tr><td colspan="5">Nenhum item lançado</td></tr>'}
+  <tr class="tot"><td colspan="4" style="text-align:right">Subtotal</td><td>${money(sub)}</td></tr>${disc?`<tr class="tot"><td colspan="4" style="text-align:right">Desconto</td><td>- ${money(disc)}</td></tr>`:""}<tr class="tot"><td colspan="4" style="text-align:right">TOTAL</td><td>${money(total)}</td></tr></table>`;
+ let html;
+ if(type==="recibo"){
+  html=`<div class="doc">${head("RECIBO")}
+   <div class="big">Recebi(emos) de <b>${esc(o.customer_name)}</b>${o.customer_document?", CPF/CNPJ "+esc(o.customer_document):""}, a importância de <b>${money(total)}</b> (${extenso(total)}), referente aos serviços da Ordem de Serviço nº ${String(o.order_number).padStart(5,"0")} no veículo placa <b>${esc(fmtPlate(o.plate))}</b> (${esc(o.vehicle_model||"")}).</div>
+   <div class="kv"><div><b>Forma de pagamento:</b> ${esc(o.payment_method||"—")}</div><div><b>Garantia:</b> ${esc(o.warranty||"—")}</div></div>
+   ${tabela}
+   <p style="margin-top:20px">Data: ${new Date().toLocaleDateString("pt-BR",{day:"2-digit",month:"long",year:"numeric"})}.</p>
+   <div class="sign"><div>${esc(o.office_name)}</div></div>
+   <div class="foot">${esc(o.receipt_message||"")}</div></div>`;
+ }else{
+  html=`<div class="doc">${head("ORDEM DE SERVIÇO")}
+   ${cliente}${veiculo}
+   <h2>Problema relatado / observações</h2><div>${esc(o.complaint||"—")}</div>
+   ${tabela}
+   <h2>Condições</h2><div class="kv"><div><b>Status:</b> ${STATUS[o.status]}</div><div><b>Pagamento:</b> ${esc(o.payment_method||"A combinar")}</div><div><b>Garantia:</b> ${esc(o.warranty||"—")}</div><div><b>Retorno:</b> ${dateBR(o.return_date)}</div></div>
+   <p class="muted" style="color:#000;margin-top:10px">Autorizo a execução dos serviços descritos acima. Veículos não retirados em até 30 dias após a conclusão estão sujeitos a cobrança de estadia.</p>
+   <div class="sign"><div>Cliente: ${esc(o.customer_name)}</div><div>${esc(o.office_name)}</div></div>
+   <div class="foot">${esc(o.receipt_message||"")}</div></div>`;
+ }
+ $("printArea").innerHTML=html;$("printArea").classList.remove("hidden");
+ const prevTitle=document.title;document.title=(type==="recibo"?"Recibo":"OS")+" "+o.order_number+" - "+o.plate;
+ setTimeout(()=>{window.print();document.title=prevTitle;$("printArea").classList.add("hidden")},50);
+}catch(e){alert(e.message)}};
+
+/* ---------- Oficina / senha ---------- */
+function fillSettings(){const u=state.user;$("sName").value=u.office_name||"";$("sPhone").value=u.phone||"";$("sAddress").value=u.address||"";$("sDocument").value=u.document||"";$("sHours").value=u.business_hours||"";$("sMessage").value=u.receipt_message||"";
+ document.querySelectorAll("#officeCard input").forEach(i=>i.readOnly=!isAdmin());$("saveOffice").classList.toggle("hidden",!isAdmin());}
+$("saveOffice").onclick=async()=>{try{const d=await api("office",{method:"PUT",body:JSON.stringify({name:$("sName").value,phone:$("sPhone").value,address:$("sAddress").value,document:$("sDocument").value,business_hours:$("sHours").value,receipt_message:$("sMessage").value})});Object.assign(state.user,{office_name:d.office.name,phone:d.office.phone,address:d.office.address,document:d.office.document,business_hours:d.office.business_hours,receipt_message:d.office.receipt_message});$("officeLabel").textContent=d.office.name+" · "+state.user.name;$("settingsMsg").textContent="Dados salvos.";}catch(e){$("settingsMsg").textContent=e.message}};
+$("changePass").onclick=async()=>{try{await api("auth/password",{method:"PUT",body:JSON.stringify({current:$("pCurrent").value,password:$("pNew").value})});$("pCurrent").value=$("pNew").value="";$("passMsg").textContent="Senha alterada."}catch(e){$("passMsg").textContent=e.message}};
+
+/* ---------- Usuários ---------- */
+async function loadUsers(){try{const d=await api("users");$("userList").innerHTML=d.users.map(u=>`<div class="item"><div class="info"><b>${esc(u.name)}</b><div class="muted">${esc(u.email)} · ${u.role==="admin"?"Administrador":"Funcionário"}</div></div><span class="tag">${u.active?"Ativo":"Inativo"}</span><div class="actions"><button class="small" onclick="resetPass('${u.id}','${esc(u.name)}')">Redefinir senha</button>${u.role!=="admin"?`<button class="small" onclick="toggleUser('${u.id}',${!u.active})">${u.active?"Desativar":"Ativar"}</button>`:""}</div></div>`).join("")||"Nenhum usuário.";}catch(e){$("userList").textContent=e.message}}
 window.toggleUser=async(id,active)=>{try{await api("users/"+id,{method:"PUT",body:JSON.stringify({active})});loadUsers()}catch(e){alert(e.message)}};
-$("createUser").onclick=async()=>{try{const d=await api("users",{method:"POST",body:JSON.stringify({name:$("uName").value,email:$("uEmail").value,password:$("uPassword").value})});$("userMsg").textContent="Funcionário cadastrado.";["uName","uEmail","uPassword"].forEach(id=>$(id).value="");loadUsers()}catch(e){$("userMsg").textContent=e.message}};
-boot();
+window.resetPass=async(id,name)=>{const p=prompt("Nova senha para "+name+" (mínimo 8 caracteres):");if(!p)return;try{await api("users/"+id,{method:"PUT",body:JSON.stringify({password:p})});alert("Senha redefinida. Passe a nova senha para "+name+".")}catch(e){alert(e.message)}};
+$("createUser").onclick=async()=>{try{await api("users",{method:"POST",body:JSON.stringify({name:$("uName").value,email:$("uEmail").value,password:$("uPassword").value})});$("userMsg").textContent="Funcionário cadastrado.";["uName","uEmail","uPassword"].forEach(id=>$(id).value="");loadUsers()}catch(e){$("userMsg").textContent=e.message}};
+
+showAuth("login");boot();
 </script>
 </body></html>

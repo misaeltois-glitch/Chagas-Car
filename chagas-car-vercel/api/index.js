@@ -40,6 +40,7 @@ async function adminOnly(user, res) {
   }
   return true;
 }
+const digits = v => String(v || "").replace(/\D/g, "");
 function money(v) {
   const n = Number(v);
   return Number.isFinite(n) && n >= 0 ? n : 0;
@@ -107,8 +108,29 @@ module.exports = async function handler(req, res) {
       return send(res, 200, { ok: true });
     }
 
+    if (route === "auth/reset" && req.method === "POST") {
+      const key = process.env.RESET_KEY || "";
+      if (key.length < 8) return send(res, 400, { error: "Recuperação de senha não configurada. Peça ao administrador para redefinir sua senha." });
+      const email = String(b.email || "").trim().toLowerCase();
+      const password = String(b.password || "");
+      if (String(b.key || "") !== key) return send(res, 401, { error: "Chave de recuperação incorreta." });
+      if (password.length < 8) return send(res, 400, { error: "A nova senha precisa ter pelo menos 8 caracteres." });
+      const hash = await bcrypt.hash(password, 12);
+      const rows = await sql`UPDATE users SET password_hash=${hash} WHERE LOWER(email)=${email} AND active=TRUE RETURNING id`;
+      if (!rows[0]) return send(res, 404, { error: "E-mail não encontrado." });
+      return send(res, 200, { ok: true });
+    }
+
     const user = await requireUser(req, res);
     if (!user) return;
+
+    if (route === "auth/password" && req.method === "PUT") {
+      const rows = await sql`SELECT password_hash FROM users WHERE id=${user.uid} LIMIT 1`;
+      if (!rows[0] || !(await bcrypt.compare(String(b.current || ""), rows[0].password_hash))) return send(res, 401, { error: "Senha atual incorreta." });
+      if (String(b.password || "").length < 8) return send(res, 400, { error: "A nova senha precisa ter pelo menos 8 caracteres." });
+      await sql`UPDATE users SET password_hash=${await bcrypt.hash(String(b.password), 12)} WHERE id=${user.uid}`;
+      return send(res, 200, { ok: true });
+    }
 
     if (route === "me" && req.method === "GET") {
       const rows = await sql`
@@ -158,6 +180,12 @@ module.exports = async function handler(req, res) {
     if (route.startsWith("users/") && req.method === "PUT") {
       if (!(await adminOnly(user, res))) return;
       const id = path[1];
+      if (b.password !== undefined) {
+        if (String(b.password).length < 8) return send(res, 400, { error: "A senha precisa ter pelo menos 8 caracteres." });
+        const r = await sql`UPDATE users SET password_hash=${await bcrypt.hash(String(b.password), 12)} WHERE id=${id} AND office_id=${user.office} RETURNING id`;
+        if (!r[0]) return send(res, 404, { error: "Usuário não encontrado." });
+        return send(res, 200, { ok: true });
+      }
       if (id === user.uid) return send(res, 400, { error: "Não é possível desativar a própria conta por aqui." });
       const active = Boolean(b.active);
       const rows = await sql`UPDATE users SET active=${active} WHERE id=${id} AND office_id=${user.office} RETURNING id,name,email,role,active`;
@@ -169,7 +197,7 @@ module.exports = async function handler(req, res) {
       const q = String(req.query?.q || "").trim();
       const rows = q
         ? await sql`SELECT c.*, COUNT(DISTINCT v.id)::int AS vehicle_count FROM customers c LEFT JOIN vehicles v ON v.customer_id=c.id AND v.office_id=c.office_id WHERE c.office_id=${user.office} AND (c.name ILIKE ${"%" + q + "%"} OR c.phone ILIKE ${"%" + q + "%"}) GROUP BY c.id ORDER BY c.name`
-        : await sql`SELECT c.*, COUNT(DISTINCT v.id)::int AS vehicle_count FROM customers c LEFT JOIN vehicles v ON v.customer_id=c.id AND v.office_id=c.office_id WHERE c.office_id=${user.office} GROUP BY c.id ORDER BY c.name`;
+        : await sql`SELECT c.*, COUNT(DISTINCT v.id)::int AS vehicle_count, COALESCE(string_agg(DISTINCT v.plate, ', '),'') AS plates FROM customers c LEFT JOIN vehicles v ON v.customer_id=c.id AND v.office_id=c.office_id WHERE c.office_id=${user.office} GROUP BY c.id ORDER BY c.name`;
       return send(res, 200, { customers: rows });
     }
     if (route === "customers" && req.method === "POST") {
@@ -189,11 +217,34 @@ module.exports = async function handler(req, res) {
     if (route === "vehicles" && req.method === "GET") {
       const plate = cleanPlate(req.query?.plate || "");
       if (plate) {
-        const rows = await sql`SELECT v.*, c.name AS customer_name, c.phone AS customer_phone FROM vehicles v JOIN customers c ON c.id=v.customer_id AND c.office_id=v.office_id WHERE v.office_id=${user.office} AND v.plate=${plate} LIMIT 1`;
-        return send(res, 200, { vehicle: rows[0] || null });
+        const rows = await sql`SELECT v.*, c.name AS customer_name, c.phone AS customer_phone, c.document AS customer_document, c.address AS customer_address FROM vehicles v JOIN customers c ON c.id=v.customer_id AND c.office_id=v.office_id WHERE v.office_id=${user.office} AND v.plate=${plate} LIMIT 1`;
+        const vehicle = rows[0] || null;
+        let last = [];
+        if (vehicle) last = await sql`SELECT o.id, o.order_number, o.entry_date, o.mileage, o.status, o.complaint,
+            COALESCE((SELECT SUM(i.quantity*i.unit_price) FROM order_items i WHERE i.order_id=o.id),0)-o.discount AS total,
+            (SELECT string_agg(i.description, ', ' ORDER BY i.ctid) FROM order_items i WHERE i.order_id=o.id) AS services
+          FROM orders o WHERE o.office_id=${user.office} AND o.vehicle_id=${vehicle.id} ORDER BY o.entry_date DESC, o.order_number DESC LIMIT 5`;
+        return send(res, 200, { vehicle, last });
       }
       const rows = await sql`SELECT v.*, c.name AS customer_name FROM vehicles v JOIN customers c ON c.id=v.customer_id AND c.office_id=v.office_id WHERE v.office_id=${user.office} ORDER BY v.plate`;
       return send(res, 200, { vehicles: rows });
+    }
+
+    if (req.method === "DELETE" && path.length === 2 && ["orders","customers","vehicles"].includes(path[0])) {
+      if (!(await adminOnly(user, res))) return;
+      const id = path[1];
+      let r;
+      if (path[0] === "orders") {
+        r = await sql`DELETE FROM orders WHERE id=${id} AND office_id=${user.office} RETURNING id`;
+      } else if (path[0] === "vehicles") {
+        await sql`DELETE FROM orders WHERE vehicle_id=${id} AND office_id=${user.office}`;
+        r = await sql`DELETE FROM vehicles WHERE id=${id} AND office_id=${user.office} RETURNING id`;
+      } else {
+        await sql`DELETE FROM orders WHERE customer_id=${id} AND office_id=${user.office}`;
+        r = await sql`DELETE FROM customers WHERE id=${id} AND office_id=${user.office} RETURNING id`;
+      }
+      if (!r[0]) return send(res, 404, { error: "Registro não encontrado." });
+      return send(res, 200, { ok: true });
     }
 
     if (route === "orders" && req.method === "GET") {
@@ -224,15 +275,20 @@ module.exports = async function handler(req, res) {
         const found = await sql`SELECT * FROM customers WHERE id=${b.customer_id} AND office_id=${user.office} LIMIT 1`;
         customer = found[0];
       }
+      const phoneDigits = digits(b.customer_phone);
+      if (!customer && phoneDigits.length >= 8) {
+        const found = await sql`SELECT * FROM customers WHERE office_id=${user.office} AND regexp_replace(phone, '\\D', '', 'g')=${phoneDigits} ORDER BY created_at LIMIT 1`;
+        customer = found[0];
+      }
       if (!customer) {
-        const found = await sql`SELECT * FROM customers WHERE office_id=${user.office} AND LOWER(name)=LOWER(${customerName}) ORDER BY created_at LIMIT 1`;
+        const found = await sql`SELECT * FROM customers WHERE office_id=${user.office} AND LOWER(TRIM(name))=LOWER(${customerName}) ORDER BY created_at LIMIT 1`;
         customer = found[0];
       }
       if (!customer) {
         const made = await sql`INSERT INTO customers (office_id,name,phone) VALUES (${user.office},${customerName},${String(b.customer_phone||"")}) RETURNING *`;
         customer = made[0];
       } else {
-        const changed = await sql`UPDATE customers SET phone=CASE WHEN ${String(b.customer_phone||"")}='' THEN phone ELSE ${String(b.customer_phone||"")} END, updated_at=NOW() WHERE id=${customer.id} AND office_id=${user.office} RETURNING *`;
+        const changed = await sql`UPDATE customers SET name=${customerName}, phone=CASE WHEN ${String(b.customer_phone||"")}='' THEN phone ELSE ${String(b.customer_phone||"")} END, updated_at=NOW() WHERE id=${customer.id} AND office_id=${user.office} RETURNING *`;
         customer = changed[0];
       }
 
@@ -240,7 +296,9 @@ module.exports = async function handler(req, res) {
       const foundV = await sql`SELECT * FROM vehicles WHERE office_id=${user.office} AND plate=${plate} LIMIT 1`;
       vehicle = foundV[0];
       if (vehicle && vehicle.customer_id !== customer.id) {
-        return send(res, 409, { error: "Esta placa já está vinculada a outro cliente desta oficina." });
+        if (!b.transfer_owner) return send(res, 409, { error: "Esta placa pertence a outro cliente. Use \"Trocar dono\" para transferir o veículo." });
+        await sql`UPDATE vehicles SET customer_id=${customer.id} WHERE id=${vehicle.id} AND office_id=${user.office}`;
+        vehicle.customer_id = customer.id;
       }
       if (!vehicle) {
         const madeV = await sql`INSERT INTO vehicles (office_id,customer_id,plate,model,color,year) VALUES (${user.office},${customer.id},${plate},${model},${String(b.color||"")},${String(b.year||"")}) RETURNING *`;
@@ -252,8 +310,9 @@ module.exports = async function handler(req, res) {
 
       let order;
       if (id) {
-        const existing = await sql`SELECT id FROM orders WHERE id=${id} AND office_id=${user.office} LIMIT 1`;
+        const existing = await sql`SELECT id, status FROM orders WHERE id=${id} AND office_id=${user.office} LIMIT 1`;
         if (!existing[0]) return send(res, 404, { error: "Ordem de serviço não encontrada." });
+        if (existing[0].status === "entregue" && user.role !== "admin") return send(res, 403, { error: "OS entregue está travada. Só o administrador pode alterar." });
         const updated = await sql`
           UPDATE orders SET customer_id=${customer.id}, vehicle_id=${vehicle.id}, status=${b.status||"aberta"},
           entry_date=${b.entry_date||new Date().toISOString().slice(0,10)}, mileage=${b.mileage===""||b.mileage==null?null:Number(b.mileage)},
